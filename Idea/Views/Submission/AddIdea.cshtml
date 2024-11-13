@@ -1,0 +1,61 @@
+﻿@model Idea.Models.NIdea
+
+@{
+    ViewData["Title"] = "Add Idea";
+}
+
+<h1>Add Idea</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddIdea" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="SubmissionId" class="form-control" value="@ViewBag.SubmissionId">
+            <input type="hidden" asp-for="UserId" class="form-control" value="@ViewBag.UserId">
+            <input type="hidden" asp-for="View" class="form-control" value="0" />
+            <input type="hidden" asp-for="FilePath" value="" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Brief" class="control-label"></label>
+                <input asp-for="Brief" class="form-control" />
+                <span asp-validation-for="Brief" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">File</label>
+                <input type="file" name="file" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="checkbox" name="isAcceptTerms" value="True" />
+                Accept Term & Conditions
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

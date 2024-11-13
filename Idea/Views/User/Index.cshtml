@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Idea.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Manage User";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+    </ol>
+</nav>
+
+<div>
+    <a class="btn btn-success" asp-area="Identity" asp-page="/Account/Register"><i class="fa-solid fa-plus"></i> Add New</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Username</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserName</td>
+                <td>@item.FirstName @item.LastName</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa-regular fa-pen-to-square"></i></a> |
+                    <a asp-action="AddRole" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa-solid fa-sliders"></i></a> |
+                    <button asp-route-id="@item.Id" class="btn btn-danger delete-user-btn" data-user-id="@item.Id"><i class="fa-regular fa-trash-can"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(function () {
+            const delUserBtn = $(".delete-user-btn");
+            delUserBtn.on("click", function () {
+                const userId = $(this).data("user-id");
+
+                if (confirm("Are you sure delete this user? This action can't undo.")) {
+                    $.ajax({
+                        url: "/User/Delete",
+                        data: {
+                            id: userId,
+                        },
+                        method: "POST",
+                        success: function () {
+                            window.location = "/User";
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
+
+@* <div class="row d-flex align-items-center text-center font-weight-bold mt-5">
+    <div class="col-4">Username</div>
+    <div class="col-4">Full Name</div>
+    <div class="mr-auto"></div>
+</div>
+
+<hr />
+
+@foreach (var item in Model)
+{
+<div class="row d-flex align-items-center text-center">
+    <div class="col-4">
+        <a asp-action="Details" asp-route-id="@item.Id">
+            @Html.DisplayFor(modelItem => item.UserName)
+        </a>
+    </div>
+
+    <div class="col-4">
+        @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+    </div>
+
+    <div class="d-flex ml-auto pr-2">
+        <div class="mr-2">
+            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm d-flex align-items-center rounded-0">
+                <span class='material-icons'>remove</span>
+            </a>
+        </div>
+
+        <div class="mr-2">
+            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm d-flex align-items-center rounded-0">
+                <span class="material-icons">edit</span>
+            </a>
+        </div>
+
+        <div class="mr-2">
+            <a asp-action="AddRole" asp-route-id="@item.Id" class="btn btn-primary btn-sm d-flex align-items-center rounded-0">
+                <span class="material-icons">people_alt</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+    <hr />
+} *@

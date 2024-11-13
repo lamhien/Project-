@@ -1,0 +1,71 @@
+@model IEnumerable<Idea.Models.Submission>
+
+@{
+    ViewData["Title"] = "Manage Submissions";
+}
+
+<h1>Manage Submissions</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-success"><i class="fa-solid fa-plus"></i> Add New</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline_2)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline_1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline_2)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa-regular fa-pen-to-square"></i></a> |
+                    <button asp-route-id="@item.Id" class="btn btn-danger delete-submission-btn" data-submission-id="@item.Id"><i class="fa-regular fa-trash-can"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(function () {
+            const delDepartmentBtn = $(".delete-submission-btn");
+            delDepartmentBtn.on("click", function () {
+                const submissionId = $(this).data("submission-id");
+
+                if (confirm("Are you sure delete this submission? This action can't undo.")) {
+                    $.ajax({
+                        url: "/AdminSubmission/Delete",
+                        data: {
+                            id: submissionId,
+                        },
+                        method: "POST",
+                        success: function () {
+                            window.location = "/AdminSubmission";
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
